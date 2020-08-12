@@ -17,7 +17,30 @@
             <artifactId>spring-browser</artifactId>
             <version>${security.core.version}</version>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
     </dependencies>
+
+    <build><!--spring boot 引入插件进行打包方式 不引用不会讲依赖打进包-->
+        <plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <version>1.3.3.RELEASE</version>
+                <executions>
+                    <execution>
+                        <goals><!---->
+                            <goal>repackage</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+        <!--打包出来最终包名-->
+        <finalName>demo</finalName>
+    </build>
 
 
 </project>
