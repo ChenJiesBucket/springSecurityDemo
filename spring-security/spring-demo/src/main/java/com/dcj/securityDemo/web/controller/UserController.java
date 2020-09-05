@@ -45,4 +45,12 @@ public class UserController {
         list.add(new User());
         return list;
     }
+
+    @GetMapping("/userInfo/{id:\\d+}")
+    public User getInfo(@PathVariable String id){
+        System.out.println("进入getInfo");
+        User user = new User();
+        user.setUsername("Tom");
+        return user;
+    }
 }
