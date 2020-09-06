@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletResponse;
 @Component
 public class TimeInterceptor implements HandlerInterceptor {
     //处理前方法 return true执行方法 false ；拦截
+
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object obj) throws Exception {
         System.out.println("preHandle");
@@ -33,7 +34,7 @@ public class TimeInterceptor implements HandlerInterceptor {
     @Override
     public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
         Long start =(Long)httpServletRequest.getAttribute("start");
-        System.out.println("执行时长："+(System.currentTimeMillis()-start));
+        System.out.println("Interceptor执行时长："+(System.currentTimeMillis()-start));
         System.out.println("exception:"+e);
         System.out.println("afterCompletion");
 
