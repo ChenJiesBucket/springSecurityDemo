@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.servlet.FilterRegistrationBean;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.servlet.config.annotation.AsyncSupportConfigurer;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
@@ -15,6 +16,16 @@ import java.util.List;
 @Configuration
 public class WebConfig extends WebMvcConfigurerAdapter /*使用拦截器interceptor 需要使用配置项该类并继承WebMvcConfigurerAdapter*/{
     //当第三方封装的filter 需要实现时 由于没有用@Component 开启只能通过配置方式
+
+    //设置异步拦截器
+    @Override
+    public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
+        super.configureAsyncSupport(configurer);
+        //configurer.registerCallableInterceptors(); callable方式注册拦截器
+        //configurer.registerDeferredResultInterceptors(); DeferredResult方式注册拦截器
+        //configurer.setDefaultTimeout();
+        //configurer.setTaskExecutor() 设置可重用线程池
+    }
 
     @Autowired
     TimeInterceptor timeInterceptor;
