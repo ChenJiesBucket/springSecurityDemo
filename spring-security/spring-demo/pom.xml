@@ -29,6 +29,21 @@
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
         </dependency>
+        <dependency><!--swagger 用户前后端分离做接口参考文档 加上wiremock形成实例-->
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.8.0</version>
+            <!--<version>3.0.0</version> 不兼容springboot1.5-->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.springfox/springfox-swagger-ui -->
+        <!--用于形成swaggerui 前台显示界面-->
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.8.0</version>
+            <!--<version>3.0.0</version> 不兼容springboot1.5-->
+        </dependency>
+
     </dependencies>
 
     <build><!--spring boot 引入插件进行打包方式 不引用不会讲依赖打进包-->
