@@ -1,10 +1,24 @@
 package com.dcj.security.config;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.crypto.scrypt.SCryptPasswordEncoder;
 
 //springSecurity 安全配置适配器
 public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
+    /**
+     * 同来返回加密后的密码(encode) 或者进行验证（mache） 内部写的是加密方法
+     * @return
+     */
+    @Bean
+    public  PasswordEncoder passwordEncoder(){
+       // return new SCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();//密码结果每次不一样 123456加密串 被破解后 所有相同密码也不会被影响
+    }
 
     //实现config 参数为http的方法
     @Override
