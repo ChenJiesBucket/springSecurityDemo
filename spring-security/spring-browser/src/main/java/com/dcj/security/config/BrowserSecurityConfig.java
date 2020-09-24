@@ -30,7 +30,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
         //过滤器链
         //super.configure(http);
         http.formLogin()   //表单登录（指定了身份认证的方式） Username Password AuthFilter
-        //http.httpBasic()   //BasicAuth Filter  有一个ExceptionTranslateFilter 接收抛出的异常 最后一步是FilterSecurityIntercepter(决定是否能够通过，根据前面若不通过抛出相应异常)
+             .loginPage("/loginPage.html")
+                //http.httpBasic()   //BasicAuth Filter  有一个ExceptionTranslateFilter 接收抛出的异常 最后一步是FilterSecurityIntercepter(决定是否能够通过，根据前面若不通过抛出相应异常)
             .and()         //以及
             .authorizeRequests() //对请求的授权
             .anyRequest()  //的任何请求
