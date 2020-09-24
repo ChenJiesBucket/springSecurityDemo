@@ -9,7 +9,10 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Component;
 
+//需要放到容器中！！！
+@Component
 public class MyUserDetailService  implements UserDetailsService {
 
      private Logger logger = LoggerFactory.getLogger(MyUserDetailService.class);
@@ -30,6 +33,6 @@ public class MyUserDetailService  implements UserDetailsService {
         //credentialsNonExpired;密码是否过期  有的网站需要定时更换密码
         //accountNonLocked;账号是否被锁定
 
-        return new User(username,passwordEncoder.encode("123456"),true,true,false,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new User(username,passwordEncoder.encode("123456"),false,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
