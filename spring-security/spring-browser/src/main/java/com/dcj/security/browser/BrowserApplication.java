@@ -1,4 +1,4 @@
-package com.dcj.security;
+package com.dcj.security.browser;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

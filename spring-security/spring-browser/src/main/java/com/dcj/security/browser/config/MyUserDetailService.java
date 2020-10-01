@@ -1,4 +1,4 @@
-package com.dcj.security.config;
+package com.dcj.security.browser.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,7 +32,6 @@ public class MyUserDetailService  implements UserDetailsService {
         //accountNonExpired;账号登录是否过期
         //credentialsNonExpired;密码是否过期  有的网站需要定时更换密码
         //accountNonLocked;账号是否被锁定
-
-        return new User(username,passwordEncoder.encode("123456"),false,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
+        return new User(username,passwordEncoder.encode("123456"),true,true,true,true, AuthorityUtils.commaSeparatedStringToAuthorityList("admin"));
     }
 }
