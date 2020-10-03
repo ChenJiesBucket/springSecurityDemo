@@ -1,5 +1,6 @@
 package com.dcj.security.browser.config;
 
+import com.dcj.security.core.properties.SecurityProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -25,6 +26,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AuthenticationFailureHandler iAuthenticationFailureHandler;
 
+    @Autowired
+    private SecurityProperties securityProperties;
+
     /**
      * 同来返回加密后的密码(encode) 或者进行验证（mache） 内部写的是加密方法
      * @return
@@ -47,7 +51,9 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 //http.httpBasic()   //BasicAuth Filter  有一个ExceptionTranslateFilter 接收抛出的异常 最后一步是FilterSecurityIntercepter(决定是否能够通过，根据前面若不通过抛出相应异常)
             .and()         //以及
             .authorizeRequests() //对请求的授权
+                .antMatchers("/code/image", securityProperties.getBrowser().getLoginPage()).permitAll()
             .anyRequest()  //的任何请求
-            .authenticated(); // 都需要身份认证
+            .authenticated()
+        .and().csrf().disable(); // 都需要身份认证
     }
 }

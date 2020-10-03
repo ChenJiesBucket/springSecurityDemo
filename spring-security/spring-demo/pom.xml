@@ -43,6 +43,12 @@
             <version>2.8.0</version>
             <!--<version>3.0.0</version> 不兼容springboot1.5-->
         </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.13</version>
+        </dependency>
+
 
     </dependencies>
 
