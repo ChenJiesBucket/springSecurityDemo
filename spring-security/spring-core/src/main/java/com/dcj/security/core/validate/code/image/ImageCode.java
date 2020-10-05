@@ -11,7 +11,7 @@ import com.dcj.security.core.validate.code.ValidateCode;
 
 /**
  *
- *
+ * 图形验证码与短信验证码只相差图片数据
  */
 public class ImageCode extends ValidateCode {
 

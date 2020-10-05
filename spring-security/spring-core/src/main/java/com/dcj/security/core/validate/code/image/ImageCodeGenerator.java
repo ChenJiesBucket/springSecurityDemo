@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.dcj.security.core.validate.code;
+package com.dcj.security.core.validate.code.image;
 
 import java.awt.Color;
 import java.awt.Font;
@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 import com.dcj.security.core.properties.SecurityProperties;
+import com.dcj.security.core.validate.code.ValidateCodeGenerator;
 import com.dcj.security.core.validate.code.image.ImageCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -21,7 +22,7 @@ import org.springframework.web.context.request.ServletWebRequest;
  *
  *
  */
-public class ImageCodeGenerator implements ValidateCodeGenerator{
+public class ImageCodeGenerator implements ValidateCodeGenerator {
 	@Autowired
 	private SecurityProperties securityProperties;
 
@@ -36,7 +37,6 @@ public class ImageCodeGenerator implements ValidateCodeGenerator{
 	 */
 	@Override
 	public ImageCode generate(ServletWebRequest request) {
-		System.out.println(securityProperties.getCode());
 		//public ImageCode generate() {
 		//取request的指否则获取配置的值
 		int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",

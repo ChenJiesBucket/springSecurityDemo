@@ -21,7 +21,9 @@ import javax.servlet.ServletRequest;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 /**
  * @Author dcj
@@ -37,6 +39,9 @@ import java.util.Set;
 @Component
 public class ValidateCodeFilter extends OncePerRequestFilter implements InitializingBean {
 
+    /**
+     * 验证码校验失败处理器
+     */
     @Autowired
     private AuthenticationFailureHandler iAuthenticationFailureHandler;
 
@@ -45,9 +50,26 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
 
     private SessionStrategy sessionStrategy = new HttpSessionSessionStrategy();
 
+    /**
+     * 系统中的校验码处理器
+     */
+    @Autowired
+    private ValidateCodeProcessorHolder validateCodeProcessorHolder;
+
+    /**
+     * 验证请求url与配置的url是否匹配的工具类
+     */
+    private AntPathMatcher pathMatcher = new AntPathMatcher();
+
 
 
     private Set<String> urls = new HashSet<>();
+
+
+    /**
+     * 存放所有需要校验验证码的url
+     */
+    private Map<String, ValidateCodeType> urlMap = new HashMap<>();
 
     @Override
     public void afterPropertiesSet() throws ServletException {
@@ -59,7 +81,7 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
         urls.add(securityProperties.getBrowser().getSignForm());
     }
 
-    @Override
+    /*@Override
     protected void doFilterInternal(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, FilterChain filterChain) throws ServletException, IOException {
          AntPathMatcher  antPathMatcher= new AntPathMatcher();
         boolean antMantch = false;
@@ -80,6 +102,45 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
             }
         }
         filterChain.doFilter(httpServletRequest,httpServletResponse);
+    }*/
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+         AntPathMatcher  antPathMatcher= new AntPathMatcher();
+
+        ValidateCodeType type = getValidateCodeType(request);
+        if (type != null) {
+            logger.info("校验请求(" + request.getRequestURI() + ")中的验证码,验证码类型" + type);
+            try {
+                validateCodeProcessorHolder.findValidateCodeProcessor(type)
+                        .validate(new ServletWebRequest(request, response));
+                logger.info("验证码校验通过");
+            } catch (ValidateCodeException exception) {
+                iAuthenticationFailureHandler.onAuthenticationFailure(request, response, exception);
+                return;
+            }
+        }
+
+        filterChain.doFilter(request, response);
+
+    }
+
+    /**
+     * 获取校验码的类型，如果当前请求不需要校验，则返回null
+     *
+     * @param request
+     * @return
+     */
+    private ValidateCodeType getValidateCodeType(HttpServletRequest request) {
+        ValidateCodeType result = null;
+        if (!StringUtils.equalsIgnoreCase(request.getMethod(), "get")) {
+            Set<String> urls = urlMap.keySet();
+            for (String url : urls) {
+                if (pathMatcher.match(url, request.getRequestURI())) {
+                    result = urlMap.get(url);
+                }
+            }
+        }
+        return result;
     }
 
     private void validate(ServletWebRequest request) throws ServletRequestBindingException, ValidateCodeException {
