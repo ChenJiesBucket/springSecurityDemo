@@ -15,12 +15,32 @@ public class BrowserProperties {
 
 	private String loginPage = SecurityConstants.DEFAULT_LOGIN_PAGE_URL;
 
+	private String signForm = SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM;
+
 	private LoginResponseType loginType = LoginResponseType.JSON;
+
+	private Boolean openFilter = true;
 
 	private int rememberMeSeconds = 3600;
 
 	public String getLoginPage() {
 		return loginPage;
+	}
+
+	public String getSignForm() {
+		return signForm;
+	}
+
+	public void setSignForm(String signForm) {
+		this.signForm = signForm;
+	}
+
+	public Boolean getOpenFilter() {
+		return openFilter;
+	}
+
+	public void setOpenFilter(Boolean openFilter) {
+		this.openFilter = openFilter;
 	}
 
 	public void setLoginPage(String loginPage) {

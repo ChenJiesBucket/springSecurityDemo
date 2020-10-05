@@ -15,6 +15,17 @@ public class ImageCodeProperties extends SmsCodeProperties {
 
 	private int width = 67;
 	private int height = 23;
+	private int expireIn = 60;
+
+	@Override
+	public int getExpireIn() {
+		return expireIn;
+	}
+
+	@Override
+	public void setExpireIn(int expireIn) {
+		this.expireIn = expireIn;
+	}
 
 	public int getWidth() {
 		return width;

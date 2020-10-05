@@ -9,6 +9,8 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.util.Random;
 
+import com.dcj.security.core.properties.SecurityProperties;
+import com.dcj.security.core.validate.code.image.ImageCode;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.ServletRequestUtils;
 import org.springframework.web.context.request.ServletWebRequest;
@@ -16,10 +18,12 @@ import org.springframework.web.context.request.ServletWebRequest;
 
 
 /**
- * @author zhailiang
+ *
  *
  */
-public class ImageCodeGenerator {
+public class ImageCodeGenerator implements ValidateCodeGenerator{
+	@Autowired
+	private SecurityProperties securityProperties;
 
 
 
@@ -30,14 +34,17 @@ public class ImageCodeGenerator {
 	 * com.imooc.security.core.validate.code.ValidateCodeGenerator#generate(org.
 	 * springframework.web.context.request.ServletWebRequest)
 	 */
-	//public ImageCode generate(ServletWebRequest request) {
-	public ImageCode generate() {
-		/*int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",
-				67);
+	@Override
+	public ImageCode generate(ServletWebRequest request) {
+		System.out.println(securityProperties.getCode());
+		//public ImageCode generate() {
+		//取request的指否则获取配置的值
+		int width = ServletRequestUtils.getIntParameter(request.getRequest(), "width",
+				securityProperties.getCode().getImage().getWidth());
 		int height = ServletRequestUtils.getIntParameter(request.getRequest(), "height",
-				23);*/
-		int width = 67;
-		int height = 23;
+				securityProperties.getCode().getImage().getHeight());
+		/*int width = 67;
+		int height = 23;*/
 		BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 
 		Graphics g = image.getGraphics();
@@ -57,7 +64,7 @@ public class ImageCodeGenerator {
 		}
 
 		String sRand = "";
-		for (int i = 0; i < 4; i++) {
+		for (int i = 0; i < securityProperties.getCode().getImage().getLength(); i++) {
 			String rand = String.valueOf(random.nextInt(10));
 			sRand += rand;
 			g.setColor(new Color(20 + random.nextInt(110), 20 + random.nextInt(110), 20 + random.nextInt(110)));
@@ -66,7 +73,7 @@ public class ImageCodeGenerator {
 
 		g.dispose();
 
-		return new ImageCode(image, sRand, 60);
+		return new ImageCode(image, sRand, securityProperties.getCode().getImage().getExpireIn());
 	}
 
 	/**
@@ -91,7 +98,11 @@ public class ImageCodeGenerator {
 	}
 
 
+	public SecurityProperties getSecurityProperties() {
+		return securityProperties;
+	}
 
-
-
+	public void setSecurityProperties(SecurityProperties securityProperties) {
+		this.securityProperties = securityProperties;
+	}
 }

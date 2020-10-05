@@ -1,5 +1,6 @@
 package com.dcj.web.config;
 
+import com.dcj.security.core.properties.SecurityProperties;
 import com.dcj.web.filter.TimerFilter;
 import com.dcj.web.interceptor.TimeInterceptor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,8 @@ import java.util.List;
 public class WebConfig extends WebMvcConfigurerAdapter /*使用拦截器interceptor 需要使用配置项该类并继承WebMvcConfigurerAdapter*/{
     //当第三方封装的filter 需要实现时 由于没有用@Component 开启只能通过配置方式
 
+    @Autowired
+    private SecurityProperties securityProperties;
     //设置异步拦截器
     @Override
     public void configureAsyncSupport(AsyncSupportConfigurer configurer) {
@@ -32,11 +35,14 @@ public class WebConfig extends WebMvcConfigurerAdapter /*使用拦截器intercep
 
     @Override/*注册拦截器interceptor需要实现的方法*/
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(timeInterceptor);
-        //super.addInterceptors(registry);
+        Boolean isOpenFilter = securityProperties.getBrowser().getOpenFilter();
+        if(isOpenFilter){
+            registry.addInterceptor(timeInterceptor);
+            //super.addInterceptors(registry);
+        }
     }
 
-    @Bean
+    /*@Bean  //暂时关闭
     public FilterRegistrationBean  timeFilter(){
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
         TimerFilter timerFilter = new TimerFilter();
@@ -46,5 +52,5 @@ public class WebConfig extends WebMvcConfigurerAdapter /*使用拦截器intercep
         urls.add("/*");
         registrationBean.setUrlPatterns(urls);
         return registrationBean;
-    }
+    }*/
 }

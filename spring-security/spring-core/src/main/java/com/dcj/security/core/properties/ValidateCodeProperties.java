@@ -3,8 +3,10 @@
  */
 package com.dcj.security.core.properties;
 
+import org.springframework.beans.factory.InitializingBean;
+
 /**
- * @author zhailiang
+ *
  *
  */
 public class ValidateCodeProperties {
