@@ -1,5 +1,6 @@
 package com.dcj.security.core.validate.code;
 
+import com.dcj.security.core.properties.SecurityConstants;
 import com.dcj.security.core.properties.SecurityProperties;
 import com.dcj.security.core.validate.code.image.ImageCode;
 import org.apache.commons.lang.StringUtils;
@@ -74,11 +75,32 @@ public class ValidateCodeFilter extends OncePerRequestFilter implements Initiali
     @Override
     public void afterPropertiesSet() throws ServletException {
         super.afterPropertiesSet();
-        String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(),",");
+       /* String[] configUrls = StringUtils.splitByWholeSeparatorPreserveAllTokens(securityProperties.getCode().getImage().getUrl(),",");
         for(String url:configUrls){
             urls.add(url);
         }
-        urls.add(securityProperties.getBrowser().getSignForm());
+        urls.add(securityProperties.getBrowser().getSignForm());*/
+
+        urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM, ValidateCodeType.IMAGE);
+        addUrlToMap(securityProperties.getCode().getImage().getUrl(), ValidateCodeType.IMAGE);
+
+        urlMap.put(SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE, ValidateCodeType.SMS);
+        addUrlToMap(securityProperties.getCode().getSms().getUrl(), ValidateCodeType.SMS);
+    }
+
+    /**
+     * 将系统中配置的需要校验验证码的URL根据校验的类型放入map
+     *
+     * @param urlString
+     * @param type
+     */
+    protected void addUrlToMap(String urlString, ValidateCodeType type) {
+        if (StringUtils.isNotBlank(urlString)) {
+            String[] urls = StringUtils.splitByWholeSeparatorPreserveAllTokens(urlString, ",");
+            for (String url : urls) {
+                urlMap.put(url, type);
+            }
+        }
     }
 
     /*@Override

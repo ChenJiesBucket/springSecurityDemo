@@ -3,6 +3,7 @@ package com.dcj.security.core.validate.code;
 import com.dcj.security.core.properties.SecurityProperties;
 import com.dcj.security.core.validate.code.image.ImageCodeGenerator;
 import com.dcj.security.core.validate.code.sms.DefaultSmsCodeSender;
+import com.dcj.security.core.validate.code.sms.SmsCodeGenerator;
 import com.dcj.security.core.validate.code.sms.SmsCodeSender;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -20,6 +21,15 @@ public class ValidateCodeBeanConfig {
     //在系统找不到@Component 为imageCodeGenerator的class时 执行以下代码
     public ValidateCodeGenerator imageCodeGenerator(){
         ImageCodeGenerator codeGenerator = new ImageCodeGenerator();
+        codeGenerator.setSecurityProperties(securityProperties);
+        return codeGenerator;
+    }
+
+    @Bean
+    @ConditionalOnMissingBean(name="smsCodeGenerator")
+    //在系统找不到@Component 为imageCodeGenerator的class时 执行以下代码
+    public ValidateCodeGenerator smsCodeGenerator(){
+        SmsCodeGenerator codeGenerator = new SmsCodeGenerator();
         codeGenerator.setSecurityProperties(securityProperties);
         return codeGenerator;
     }

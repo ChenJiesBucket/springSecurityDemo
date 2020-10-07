@@ -1,5 +1,6 @@
 package com.dcj.security.browser.config;
 
+import com.dcj.security.core.authentication.mobile.SmsCodeAuthenticationSecurityConfig;
 import com.dcj.security.core.properties.SecurityProperties;
 import com.dcj.security.core.validate.code.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,6 +63,11 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     }
     @Autowired
     private UserDetailsService userDetailsService;
+
+    //Core包中的短信过滤链
+    @Autowired
+    private SmsCodeAuthenticationSecurityConfig smsCodeAuthenticationSecurityConfig;
+
     /*1 如何使用*loginPage()*方法配置自定义登录页面：
       .loginPage("/login.html")
     2 如果我们不指定这个，Spring Security将在/login上生成一个非常基本的登录表单。
@@ -81,20 +87,23 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .successHandler(iAuthenticationSuccessHandler) //登陆成功后的执行的方法
                 .loginPage(securityProperties.getBrowser().getLoginPage())
                 //http.httpBasic()   //BasicAuth Filter  有一个ExceptionTranslateFilter 接收抛出的异常 最后一步是FilterSecurityIntercepter(决定是否能够通过，根据前面若不通过抛出相应异常)
+             .and().apply(smsCodeAuthenticationSecurityConfig)//在密码校验之后放置短信登录验证
              .and()
              .rememberMe()//记住我 注意form表单 name 只能为remember-me
                 .tokenRepository(persistentTokenRepository())//token记录数据源
                 .tokenValiditySeconds(securityProperties.getBrowser().getRememberMeSeconds()) //过期时间
                 .userDetailsService(userDetailsService)//拿到用户名后最后进行登录
-
             .and()         //以及
             .authorizeRequests() //对请求的授权
             .antMatchers("/code/*",
                         securityProperties.getBrowser().getLoginPage(),
-                        securityProperties.getBrowser().getSignForm()
+                        securityProperties.getBrowser().getSignForm(),
+                        securityProperties.getBrowser().getMobilesignForm()
             ).permitAll()
             .anyRequest()  //的任何请求
             .authenticated()
         .and().csrf().disable(); // 都需要身份认证
+
+
     }
 }

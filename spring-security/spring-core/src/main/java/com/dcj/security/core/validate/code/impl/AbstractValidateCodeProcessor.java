@@ -58,6 +58,7 @@ public abstract class AbstractValidateCodeProcessor<C extends ValidateCode> impl
 		//String generatorName = type + ValidateCodeGenerator.class.getSimpleName();
 		String generatorName = type + StringUtils.substringAfter(ValidateCodeGenerator.class.getSimpleName(), "Validate");
 		ValidateCodeGenerator validateCodeGenerator = validateCodeGenerators.get(generatorName);
+		System.out.println(validateCodeGenerator);
 		if (validateCodeGenerator == null) {
 			throw new ValidateCodeException("验证码生成器" + generatorName + "不存在");
 		}

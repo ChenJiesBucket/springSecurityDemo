@@ -1,4 +1,4 @@
-package com.dcj.security.browser.config;
+package com.dcj.security.core.UserDetails;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

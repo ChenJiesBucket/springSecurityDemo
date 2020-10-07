@@ -17,6 +17,8 @@ public class BrowserProperties {
 
 	private String signForm = SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_FORM;
 
+	private String mobilesignForm = SecurityConstants.DEFAULT_LOGIN_PROCESSING_URL_MOBILE;
+
 	private LoginResponseType loginType = LoginResponseType.JSON;
 
 	private Boolean openFilter = true;
@@ -79,4 +81,12 @@ public class BrowserProperties {
 		this.session = session;
 	}
 
+
+	public String getMobilesignForm() {
+		return mobilesignForm;
+	}
+
+	public void setMobilesignForm(String mobilesignForm) {
+		this.mobilesignForm = mobilesignForm;
+	}
 }

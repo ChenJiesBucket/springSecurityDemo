@@ -15,7 +15,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
     //public static final String SPRING_SECURITY_FORM_USERNAME_KEY = "username";
     public static final String FORM_NOBILE_KEY = "mobile";
     //public static final String SPRING_SECURITY_FORM_PASSWORD_KEY = "password";
-    private String usernameParameter = "username";
+    private String usernameParameter = "mobile";
     private String passwordParameter = "password";
     private boolean postOnly = true; //是否只处理post请求
 
@@ -50,7 +50,7 @@ public class SmsAuthenticationFilter extends AbstractAuthenticationProcessingFil
     }
 
     public void setUsernameParameter(String usernameParameter) {
-        Assert.hasText(usernameParameter, "Username parameter must not be empty or null");
+        Assert.hasText(usernameParameter, "mobile parameter must not be empty or null");
         this.usernameParameter = usernameParameter;
     }
 
